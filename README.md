@@ -35,24 +35,30 @@ Karınca Kolonisi Optimizasyonu algoritmasının VBA kaynak kodlarını içeren 
 Modül içerisinde:
 Müşteri bilgileri  müşteri numarası şeklinde , X-Y koordinatları(sütunlarda bulunur) ve talep miktarı(sütunlarda bulunur) excel üzerinden okunur. 
 Her satır bir müşteriyi temsil etmektedir.Müşteri koordinatları okunduktan sonra her müşteri noktası arasındaki uzaklık hesaplanır.Mesafe matrisi boyutu nxn'liktir. Buradaki kordinatlar ve talep miktarları müşteri(satır)/depo noktalarını(sütun) temsil etmektedir.
+
 **Araç kapasitesi:** Excel’de kullanıcı tarafından girilen araç kapasitesi değeri okunarak(Aracımızın rota boyunca taşıyabileceği en fazla toplam talep miktarı)Rota oluşturulurken müşterilerin talep miktarları sırayla toplam yüke eklenir.
 Eğer yeni müşteri eklendiğinde toplam yük araç kapasitesini aşmıyorsa müşteri mevcut rotaya dahil ediliyor. Kapasite aşılırsa mevcut rota tamamlanır ve yeni araç rotası başlatılır.Kısaca; Rota oluşturulurken müşterilerin talepleri sırayla toplanır.
 Ancak toplam talep araç kapasitesini aşarsa o müşteri mevcut rotaya eklenmez, yeni araç rotası başlatılır.
 Toplam yük, rotaya dahil edilen müşterilerin talep miktarlarının toplamını; araç kapasitesi ise aracın taşıyabileceği maksimum yük miktarını ifade eder.
 Rota oluşturulurken toplam yükün araç kapasitesini aşmaması hedeflenir. Toplam yük kapasite sınırını geçtiğinde mevcut rota sonlandırılır ve yeni bir araç rotası oluşturulur.
+
 **Rotanın içeriği ise**  depodan hangi müşteriye gideceği kısmı mesafe matrisyle alakalıdır. Mesafe matrisi oluşturulduktan sonra feromon matrisi(**Önceki çözümlerden elde edilen yol tercih bilgilerinin tutulduğu matris**) başlatılır. 
+
 Rota oluşturma aşamasında algoritma, mesafe matrisi ve feromon matrisi bilgilerini birlikte kullanarak bir sonraki ziyaret edilecek müşteri belirlenir. 
 Tüm müşteriler ziyaret edildiğinde algoritma rota oluşturmayı bırakır.Tüm müşteriler ziyaret edilerek rotalar tamamlandıktan sonra her rotanın toplam mesafesi, mesafe matrisindeki uzaklık değerleri kullanılarak hesaplanır.
 Daha sonra tüm rotaların mesafeleri toplanarak çözümün toplam mesafesi elde edilir.İlk iterasyonda elde edilen toplam mesafe başlangıç çözümü olarak saklanır.
 Sonraki iterasyonlarda elde edilen toplam mesafeler bu değerle karşılaştırılır ve daha düşük mesafeye sahip çözüm bulunursa en iyi çözüm güncellenir.En iyi çözüm saklandıktan sonra feromon matrisi güncellenir.
 Feromon matrisi, yolların tercih edilme seviyelerini tutan yapıydı. Daha kısa toplam mesafeye sahip rotalarda kullanılan müşteri geçişlerinin feromon değerleri artırılır. 
 Kullanılmayan veya daha az başarılı olan yolların feromon değerleri ise buharlaşma oranı(**feromon matrisi üzerindeki değerler belirli bir katsayı ile çarpılarak azaltılır.**) ile azaltılır.
+
 Böylece eski rotaların etkisi zamanla azalırken, yeni bulunan başarılı rotaların daha fazla öne çıkması sağlanır.
 Algoritma tekrar rota oluşturmaya başlıyor. Her iterasyonda tüm müşteriler için gerekli rotalar baştan oluşturuluyor.
 Rota oluşturma sırasında müşteri talepleri tekrar değerlendirilir, kapasite kontrolleri yeniden yapılır ve tüm müşteriler ziyaret edilene kadar yeni rotalar oluşturulmaya devam edilir.
+
 Oluşturulan tüm rotaların toplam mesafesi hesaplandıktan sonra çözüm değerlendirilir ve feromon matrisi güncellenir.
 Sonraki iterasyonlarda ise aynı işlemler güncellenmiş feromon değerleri kullanılarak tekrar gerçekleştirilir.
 Belirlenen iterasyon sayısına ulaşıldığında algoritma sonlandırılır. Her iterasyonda oluşturulan rota setlerinin toplam mesafeleri karşılaştırılır. 
+
 **En düşük toplam mesafeye sahip çözüm en iyi çözüm olarak saklanır. Belirlenen iterasyon sayısına ulaşıldığında saklanan en iyi çözüm ve bu çözüme ait rotalar Excel sayfasına yazdırılarak kullanıcıya çıktı olarak veriliyor.**
 
 
